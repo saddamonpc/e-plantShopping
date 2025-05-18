@@ -9,27 +9,52 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
- 
+    let total = 0;
+    cart.forEach(item => {
+      // Extract the cost and convert it from string (e.g., "$10") to a number
+      const costValue = parseFloat(item.cost.substring(1));
+      // Multiply by quantity and add to total
+      total += costValue * item.quantity;
+    });
+    // Return the total
+    return total
   };
 
   const handleContinueShopping = (e) => {
-   
+    onContinueShopping(e); // Call the function passed from the parent component
   };
 
-
+  const handleCheckoutShopping = (e) => {
+  alert('Functionality to be added for future reference');
+  };
 
   const handleIncrement = (item) => {
+    // Dispatch updateQuantity action to increase the quantity by 1
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
   };
 
   const handleDecrement = (item) => {
-   
+    // Check if quantity is greater than 1
+    if (item.quantity > 1) {
+      // If quantity > 1, decrease the quantity by 1
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    } else {
+      // If quantity is 1, remove the item from the cart
+      dispatch(removeItem(item.name));
+    }
   };
 
   const handleRemove = (item) => {
+    // Dispatch removeItem action to delete the item from cart
+    dispatch(removeItem(item.name));
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
+    // Extract cost value (remove '$' and convert to number)
+    const costValue = parseFloat(item.cost.substring(1));
+    // Multiply by quantity
+    return (costValue * item.quantity)
   };
 
   return (
